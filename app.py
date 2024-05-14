@@ -71,15 +71,12 @@ def add_user():
 
 @app.route('/api/v1/user/create', methods=['POST'])
 def create_user():
-    # Obtener los datos JSON de la solicitud
     json_data = request.get_json()
 
-    # Obtener los valores de 'email', 'name' e 'id' del diccionario JSON
     email = json_data.get('email')
     name = json_data.get('name')
     user_id = json_data.get('id')
     
-    # Devolver una respuesta en formato JSON con los mismos datos recibidos
     return jsonify({
         'payload': {
             'email': email,
