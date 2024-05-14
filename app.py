@@ -1,5 +1,6 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request
 from flask_cors import CORS
+
 
 
 app = Flask(__name__)
@@ -41,25 +42,51 @@ def get_v1_users():
 
 @app.route("/api/v1/user", methods=['POST'])
 def post_v1_user():
-    if request.method == 'POST':
-        # Obtener los parámetros de consulta email y name
         email = request.args.get('email')
         name = request.args.get('name')
         
-        # Verificar si se proporcionaron email y name
-        if email is None or name is None:
-            return jsonify({'error': 'email and name parameters are required'}), 400
-        
-        # Crear el objeto de respuesta JSON
         response_data = {
             'payload': {
                 'email': email,
                 'name': name
             }
         }
-        
-        # Devolver la respuesta JSON
+
         return jsonify(response_data)
 
+
+@app.route('/api/v1/user/add', methods=['POST'])
+def add_user():
+    email = request.form.get('email')
+    name = request.form.get('name')
+    id = request.form.get('id')
+    
+    return jsonify({
+         'payload': {
+              'email': email,
+              'name': name,
+              'id': id
+         } 
+    })
+
+@app.route('/api/v1/user/create', methods=['POST'])
+def create_user():
+    # Obtener los datos JSON de la solicitud
+    json_data = request.get_json()
+
+    # Obtener los valores de 'email', 'name' e 'id' del diccionario JSON
+    email = json_data.get('email')
+    name = json_data.get('name')
+    user_id = json_data.get('id')
+    
+    # Devolver una respuesta en formato JSON con los mismos datos recibidos
+    return jsonify({
+        'payload': {
+            'email': email,
+            'name': name,
+            'id': user_id
+        }
+    })
+        
 if __name__ == "__main__":
     app.run(debug=True)
